@@ -12,9 +12,11 @@ import type { PokemonListItem } from "@/types/models";
 
 interface PokemonCardProps {
   pokemon: PokemonListItem;
+  /** Set for the first card so its image is LCP and loads eagerly */
+  priority?: boolean;
 }
 
-export function PokemonCard({ pokemon }: PokemonCardProps) {
+export function PokemonCard({ pokemon, priority }: PokemonCardProps) {
   const tCard = useTranslations("pokemon.card");
   const tTypes = useTranslations("pokemon.types");
   const { id, name, types, sprites } = pokemon;
@@ -54,6 +56,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
             fill
             sizes="96px"
             className="object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-110"
+            priority={priority}
           />
         </div>
 

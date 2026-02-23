@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       : routing.defaultLocale;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
     </html>
   );

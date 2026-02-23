@@ -44,14 +44,16 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2" aria-label={t("homeLabel")}>
-          <Image
-            src="/pokemon-logo.svg"
-            alt="Pokémon"
-            width={140}
-            height={28}
-            className="h-7 w-auto"
-            priority
-          />
+          <span className="relative block h-7 w-[140px]">
+            <Image
+              src="/pokemon-logo.svg"
+              alt="Pokémon"
+              fill
+              className="object-contain object-left"
+              sizes="140px"
+              priority
+            />
+          </span>
         </Link>
 
         {/* Nav links */}

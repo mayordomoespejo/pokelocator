@@ -105,9 +105,9 @@ export function PokemonGrid({
         role="list"
         aria-label="Pokémon list"
       >
-        {pokemon.map((p) => (
+        {pokemon.map((p, index) => (
           <div key={p.id} role="listitem">
-            <PokemonCard pokemon={p} />
+            <PokemonCard pokemon={p} priority={index === 0} />
           </div>
         ))}
       </div>
