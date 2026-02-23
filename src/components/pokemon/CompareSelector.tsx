@@ -28,9 +28,11 @@ export function CompareSelector({ label, slot, onSelect, onClear }: CompareSelec
   const listboxRef = useRef<HTMLUListElement>(null);
 
   const debouncedQuery = useDebounce(query, SEARCH_DEBOUNCE_MS);
-  const { suggestions } = usePokemonSearch(debouncedQuery);
+  const { suggestions, isLoading } = usePokemonSearch(debouncedQuery);
 
   const showSuggestions = isOpen && suggestions.length > 0;
+  const showNoResults =
+    isOpen && debouncedQuery.trim().length >= 2 && !isLoading && suggestions.length === 0;
 
   const handleSelect = useCallback(
     (s: { id: number; name: string }) => {
@@ -136,7 +138,7 @@ export function CompareSelector({ label, slot, onSelect, onClear }: CompareSelec
               id={`${id}-listbox`}
               role="listbox"
               aria-label={t("suggestions", { label })}
-              className="listbox-scroll border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 max-h-48 overflow-x-hidden overflow-y-auto rounded-xl border pr-1 shadow-lg"
+              className="listbox-scroll border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 max-h-48 overflow-x-hidden overflow-y-auto rounded-xl border shadow-lg"
             >
               {suggestions.map((s, index) => (
                 <li
@@ -160,6 +162,18 @@ export function CompareSelector({ label, slot, onSelect, onClear }: CompareSelec
                 </li>
               ))}
             </ul>
+          )}
+
+          {showNoResults && (
+            <div
+              id={`${id}-listbox`}
+              role="status"
+              aria-live="polite"
+              className="border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 rounded-xl border px-4 py-2.5 text-sm shadow-lg"
+            >
+              <p className="text-text-primary font-medium">{tSearch("noResults")}</p>
+              <p className="text-text-muted text-xs">{tSearch("noResultsHint")}</p>
+            </div>
           )}
         </>
       )}

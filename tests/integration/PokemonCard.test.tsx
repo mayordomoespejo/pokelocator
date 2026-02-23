@@ -1,18 +1,32 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { act } from "react";
+import type { ReactNode } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { PokemonCard } from "@/components/pokemon/PokemonCard";
 import type { PokemonListItem } from "@/types/models";
 
-// Mock next/navigation
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn() }),
-  usePathname: () => "/",
+vi.mock("next-intl", () => ({
+  useTranslations: (namespace: string) => {
+    const t = (key: string, values?: Record<string, string>) => {
+      if (namespace === "pokemon.card" && key === "viewDetails") {
+        return `View ${values?.name ?? ""} details`;
+      }
+      if (namespace === "pokemon.types" && key === "electric") {
+        return "Electric";
+      }
+      return key;
+    };
+    t.has = (key: string) => namespace === "pokemon.types" && key === "electric";
+    return t;
+  },
 }));
 
-// Mock next-themes
-vi.mock("next-themes", () => ({
-  useTheme: () => ({ theme: "light", setTheme: vi.fn() }),
+vi.mock("@/i18n/navigation", () => ({
+  Link: ({ href, children, ...props }: { href: string; children: ReactNode }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 const mockPokemon: PokemonListItem = {
@@ -28,36 +42,61 @@ const mockPokemon: PokemonListItem = {
   url: "https://pokeapi.co/api/v2/pokemon/25/",
 };
 
-function wrapper({ children }: { children: React.ReactNode }) {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
-}
-
 describe("PokemonCard", () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    root = createRoot(container);
+  });
+
+  afterEach(() => {
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
   it("renders pokemon name", () => {
-    render(<PokemonCard pokemon={mockPokemon} />, { wrapper });
-    expect(screen.getByRole("article")).toBeInTheDocument();
-    expect(screen.getByText("pikachu")).toBeInTheDocument();
+    act(() => {
+      root.render(<PokemonCard pokemon={mockPokemon} />);
+    });
+    const article = container.querySelector("article");
+    expect(article).toBeInTheDocument();
+    expect(container.textContent).toContain("pikachu");
   });
 
   it("renders dex number", () => {
-    render(<PokemonCard pokemon={mockPokemon} />, { wrapper });
-    expect(screen.getByText("#025")).toBeInTheDocument();
+    act(() => {
+      root.render(<PokemonCard pokemon={mockPokemon} />);
+    });
+    expect(container.textContent).toContain("#025");
   });
 
   it("renders type badge", () => {
-    render(<PokemonCard pokemon={mockPokemon} />, { wrapper });
-    expect(screen.getByText("Electric")).toBeInTheDocument();
+    act(() => {
+      root.render(<PokemonCard pokemon={mockPokemon} />);
+    });
+    expect(container.textContent).toContain("Electric");
   });
 
   it("has accessible aria-label", () => {
-    render(<PokemonCard pokemon={mockPokemon} />, { wrapper });
-    expect(screen.getByRole("article", { name: /pikachu.*electric/i })).toBeInTheDocument();
+    act(() => {
+      root.render(<PokemonCard pokemon={mockPokemon} />);
+    });
+    const article = container.querySelector("article");
+    expect(article?.getAttribute("aria-label")).toMatch(/pikachu/i);
+    expect(article?.getAttribute("aria-label")).toMatch(/electric/i);
   });
 
   it("links to detail page", () => {
-    render(<PokemonCard pokemon={mockPokemon} />, { wrapper });
-    const link = screen.getByRole("link", { name: /view pikachu details/i });
-    expect(link).toHaveAttribute("href", "/pokemon/25");
+    act(() => {
+      root.render(<PokemonCard pokemon={mockPokemon} />);
+    });
+    const link = container.querySelector('a[href="/pokemon/25"]');
+    expect(link).toBeInTheDocument();
+    expect(link?.getAttribute("aria-label")).toMatch(/view pikachu details/i);
   });
 });

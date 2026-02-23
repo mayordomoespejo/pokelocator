@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom";
 import { vi } from "vitest";
 
+// React 19: silence "act environment" warnings when using react-dom/client in tests
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
 // Polyfill IntersectionObserver for jsdom
 global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),

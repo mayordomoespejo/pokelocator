@@ -100,6 +100,21 @@ select:focus-visible {
   box-shadow: none;
 }
 
+/* Hide native clear button on search inputs (we render a custom one) */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+input[type="search"]::-ms-clear,
+input[type="search"]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* Skeleton shimmer animation */
 @keyframes shimmer {
   0% {
@@ -157,7 +172,6 @@ select:focus-visible {
 .listbox-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgb(var(--border-strong) / 0.45) transparent;
-  scrollbar-gutter: stable;
 }
 
 .listbox-scroll::-webkit-scrollbar {

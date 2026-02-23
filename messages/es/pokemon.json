@@ -3,7 +3,9 @@
     "placeholder": "Buscar Pokémon por nombre o número…",
     "label": "Buscar Pokémon",
     "clear": "Borrar búsqueda",
-    "comboboxLabel": "Seleccionar Pokémon para {label}"
+    "comboboxLabel": "Seleccionar Pokémon para {label}",
+    "noResults": "No se encontraron resultados",
+    "noResultsHint": "Prueba con otro nombre o número."
   },
   "filter": {
     "all": "Todos",

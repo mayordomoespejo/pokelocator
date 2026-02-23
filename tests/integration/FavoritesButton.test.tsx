@@ -1,12 +1,23 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { act } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { FavoritesButton } from "@/features/favorites/FavoritesButton";
 import { useFavoritesStore } from "@/lib/store/favoritesStore";
 import type { FavoriteItem } from "@/types/models";
 
-vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn() }),
+vi.mock("next-intl", () => ({
+  useTranslations: () => {
+    const t = (key: string, values?: Record<string, string>) => {
+      const name = values?.name ?? "pokemon";
+      if (key === "add") return `Add ${name} to favorites`;
+      if (key === "remove") return `Remove ${name} from favorites`;
+      if (key === "save") return "Save";
+      if (key === "saved") return "Saved";
+      return key;
+    };
+    t.has = () => false;
+    return t;
+  },
 }));
 
 const mockItem: FavoriteItem = {
@@ -17,47 +28,78 @@ const mockItem: FavoriteItem = {
 };
 
 describe("FavoritesButton", () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
   beforeEach(() => {
     useFavoritesStore.setState({ favorites: [], hydrated: true });
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    root = createRoot(container);
+  });
+
+  afterEach(() => {
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
   });
 
   it("renders add to favorites button", () => {
-    render(<FavoritesButton item={mockItem} />);
-    expect(screen.getByRole("button", { name: /add bulbasaur to favorites/i })).toBeInTheDocument();
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} />);
+    });
+    const btn = container.querySelector("button");
+    expect(btn).toBeTruthy();
+    expect(btn?.getAttribute("aria-label")).toContain("Add");
+    expect(btn?.getAttribute("aria-label")).toContain("Bulbasaur");
   });
 
   it("shows aria-pressed=false when not favorited", () => {
-    render(<FavoritesButton item={mockItem} />);
-    const btn = screen.getByRole("button");
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} />);
+    });
+    const btn = container.querySelector("button");
     expect(btn).toHaveAttribute("aria-pressed", "false");
   });
 
-  it("toggles favorite on click", async () => {
-    const user = userEvent.setup();
-    render(<FavoritesButton item={mockItem} />);
+  it("toggles favorite on click", () => {
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} />);
+    });
 
-    const btn = screen.getByRole("button");
-    await user.click(btn);
+    const btn = container.querySelector("button");
+    expect(btn).toBeTruthy();
+
+    act(() => {
+      btn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
 
     expect(useFavoritesStore.getState().isFavorite(1)).toBe(true);
   });
 
-  it("updates aria-label when favorited", async () => {
+  it("updates aria-label when favorited", () => {
     useFavoritesStore.setState({ favorites: [mockItem], hydrated: true });
-    render(<FavoritesButton item={mockItem} />);
-    expect(
-      screen.getByRole("button", { name: /remove bulbasaur from favorites/i })
-    ).toBeInTheDocument();
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} />);
+    });
+    const btn = container.querySelector("button");
+    expect(btn?.getAttribute("aria-label")).toContain("Remove");
+    expect(btn?.getAttribute("aria-label")).toContain("Bulbasaur");
   });
 
   it("shows label when showLabel=true", () => {
-    render(<FavoritesButton item={mockItem} showLabel />);
-    expect(screen.getByText("Save")).toBeInTheDocument();
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} showLabel />);
+    });
+    expect(container.textContent).toContain("Save");
   });
 
   it("shows Saved label when item is favorited and showLabel=true", () => {
     useFavoritesStore.setState({ favorites: [mockItem], hydrated: true });
-    render(<FavoritesButton item={mockItem} showLabel />);
-    expect(screen.getByText("Saved")).toBeInTheDocument();
+    act(() => {
+      root.render(<FavoritesButton item={mockItem} showLabel />);
+    });
+    expect(container.textContent).toContain("Saved");
   });
 });

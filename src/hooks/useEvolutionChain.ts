@@ -10,10 +10,11 @@ export function useEvolutionChain(chainId: number | undefined): {
   isLoading: boolean;
   isError: boolean;
 } {
+  const normalizedChainId = chainId ?? 0;
   const query = useQuery({
-    queryKey: pokemonKeys.evolution(chainId ?? 0),
-    queryFn: () => fetchNormalizedEvolutionChain(chainId!),
-    enabled: !!chainId && chainId > 0,
+    queryKey: pokemonKeys.evolution(normalizedChainId),
+    queryFn: () => fetchNormalizedEvolutionChain(normalizedChainId),
+    enabled: normalizedChainId > 0,
   });
 
   return {

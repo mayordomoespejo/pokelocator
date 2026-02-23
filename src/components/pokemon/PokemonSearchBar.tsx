@@ -24,9 +24,11 @@ export function PokemonSearchBar({ className }: PokemonSearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedQuery = useDebounce(query, SEARCH_DEBOUNCE_MS);
-  const { suggestions } = usePokemonSearch(debouncedQuery);
+  const { suggestions, isLoading } = usePokemonSearch(debouncedQuery);
 
   const showSuggestions = isOpen && suggestions.length > 0;
+  const showNoResults =
+    isOpen && debouncedQuery.trim().length >= 2 && !isLoading && suggestions.length === 0;
 
   const handleSelect = useCallback(
     (suggestion: { id: number; name: string }) => {
@@ -133,6 +135,18 @@ export function PokemonSearchBar({ className }: PokemonSearchBarProps) {
           onSelect={handleSelect}
           inputId={inputId}
         />
+      )}
+
+      {showNoResults && (
+        <div
+          id={`${inputId}-listbox`}
+          role="status"
+          aria-live="polite"
+          className="border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 rounded-xl border px-4 py-2.5 text-sm shadow-lg"
+        >
+          <p className="text-text-primary font-medium">{t("noResults")}</p>
+          <p className="text-text-muted text-xs">{t("noResultsHint")}</p>
+        </div>
       )}
     </div>
   );

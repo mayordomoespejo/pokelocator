@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { TypeBadge } from "@/components/ui/Badge";
 import { FavoritesButton } from "@/features/favorites/FavoritesButton";
 import { formatDexNumber, capitalize, formatHeight, formatWeight } from "@/lib/utils/formatters";
+import { pokemonToFavoriteItem } from "@/lib/utils/mappers";
 import type { PokemonDetail } from "@/types/models";
 import type { PokemonSpecies } from "@/types/models";
 
@@ -19,12 +20,7 @@ export function PokemonDetailHero({ pokemon, species, compact = false }: Pokemon
   const t = useTranslations("pokemon.detail.hero");
   const { id, name, types, sprites, height, weight } = pokemon;
 
-  const favoriteItem = {
-    id,
-    name,
-    types,
-    sprite: sprites.officialArtwork,
-  };
+  const favoriteItem = pokemonToFavoriteItem(pokemon);
 
   return (
     <div

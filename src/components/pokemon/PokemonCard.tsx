@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { TypeBadge } from "@/components/ui/Badge";
 import { FavoritesButton } from "@/features/favorites/FavoritesButton";
 import { formatDexNumber, capitalize } from "@/lib/utils/formatters";
+import { pokemonToFavoriteItem } from "@/lib/utils/mappers";
 import type { PokemonListItem } from "@/types/models";
 
 interface PokemonCardProps {
@@ -21,12 +22,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
     tTypes.has(type.name) ? tTypes(type.name) : capitalize(type.name)
   );
 
-  const favoriteItem = {
-    id,
-    name,
-    types,
-    sprite: sprites.officialArtwork,
-  };
+  const favoriteItem = pokemonToFavoriteItem(pokemon);
 
   return (
     <motion.article

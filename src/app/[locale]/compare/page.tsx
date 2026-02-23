@@ -9,10 +9,15 @@ import { CompareTable } from "@/components/pokemon/CompareTable";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { usePokemonDetail } from "@/hooks/usePokemonDetail";
 import { useCompareStore } from "@/lib/store/compareStore";
+import type { PokemonDetail } from "@/types/models";
 
-function PokemonComparePanel({ pokemonId }: { pokemonId: number }) {
-  const { pokemon, isLoading } = usePokemonDetail(pokemonId);
-
+function PokemonComparePanel({
+  pokemon,
+  isLoading,
+}: {
+  pokemon?: PokemonDetail;
+  isLoading: boolean;
+}) {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center gap-3">
@@ -36,8 +41,8 @@ export default function ComparePage() {
   const tPokemon = useTranslations("pokemon.compare");
   const { slotA, slotB, setSlot, clearSlot } = useCompareStore();
 
-  const { pokemon: pokemonA } = usePokemonDetail(slotA.id ?? 0);
-  const { pokemon: pokemonB } = usePokemonDetail(slotB.id ?? 0);
+  const { pokemon: pokemonA, isLoading: isLoadingA } = usePokemonDetail(slotA.id ?? 0);
+  const { pokemon: pokemonB, isLoading: isLoadingB } = usePokemonDetail(slotB.id ?? 0);
 
   const canCompare = !!pokemonA && !!pokemonB;
 
@@ -74,7 +79,7 @@ export default function ComparePage() {
         <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="border-border bg-bg-card rounded-2xl border p-4">
             {slotA.id ? (
-              <PokemonComparePanel pokemonId={slotA.id} />
+              <PokemonComparePanel pokemon={pokemonA} isLoading={isLoadingA} />
             ) : (
               <div className="text-text-muted flex h-32 items-center justify-center text-sm">
                 {tPokemon("slotA")}
@@ -83,7 +88,7 @@ export default function ComparePage() {
           </div>
           <div className="border-border bg-bg-card rounded-2xl border p-4">
             {slotB.id ? (
-              <PokemonComparePanel pokemonId={slotB.id} />
+              <PokemonComparePanel pokemon={pokemonB} isLoading={isLoadingB} />
             ) : (
               <div className="text-text-muted flex h-32 items-center justify-center text-sm">
                 {tPokemon("slotB")}

@@ -21,7 +21,7 @@ export const SearchSuggestions = forwardRef<HTMLUListElement, SearchSuggestionsP
         id={`${inputId}-listbox`}
         role="listbox"
         aria-label="Pokemon suggestions"
-        className="listbox-scroll border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 overflow-x-hidden overflow-y-auto rounded-xl border pr-1 shadow-lg"
+        className="listbox-scroll border-border-strong bg-bg-card absolute top-full right-0 left-0 z-50 mt-1 overflow-x-hidden overflow-y-auto rounded-xl border shadow-lg"
       >
         {suggestions.map((suggestion, index) => (
           <li

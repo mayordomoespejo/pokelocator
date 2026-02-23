@@ -28,8 +28,10 @@ export function usePokemonSearch(query: string): {
   });
 
   const suggestions = useMemo<SearchSuggestion[]>(() => {
-    if (!query || query.length < 2 || !allNamesQuery.data) return [];
+    if (!allNamesQuery.data) return [];
     const q = query.toLowerCase().trim();
+    if (q.length < 2) return [];
+
     return allNamesQuery.data.results
       .filter((p) => p.name.startsWith(q))
       .slice(0, MAX_SEARCH_SUGGESTIONS)

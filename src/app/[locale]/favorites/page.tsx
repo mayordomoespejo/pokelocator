@@ -8,6 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { PokemonCard } from "@/components/pokemon/PokemonCard";
 import { Button } from "@/components/ui/Button";
 import { useFavorites } from "@/hooks/useFavorites";
+import { favoriteToPokemonListItem } from "@/lib/utils/mappers";
 import type { PokemonListItem } from "@/types/models";
 
 export default function FavoritesPage() {
@@ -22,17 +23,7 @@ export default function FavoritesPage() {
   }, []);
 
   // Map FavoriteItem to PokemonListItem shape for PokemonCard
-  const pokemonItems: PokemonListItem[] = favorites.map((fav) => ({
-    id: fav.id,
-    name: fav.name,
-    types: fav.types,
-    sprites: {
-      officialArtwork: fav.sprite,
-      frontDefault: fav.sprite,
-      frontShiny: null,
-    },
-    url: `https://pokeapi.co/api/v2/pokemon/${fav.id}/`,
-  }));
+  const pokemonItems: PokemonListItem[] = favorites.map(favoriteToPokemonListItem);
 
   const isReady = mounted && hydrated;
 

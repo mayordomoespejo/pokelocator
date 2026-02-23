@@ -1,6 +1,7 @@
 export const POKEAPI_BASE_URL = "https://pokeapi.co/api/v2";
 
 export const POKEMON_PAGE_SIZE = 24;
+export const API_BATCH_CONCURRENCY = 8;
 
 // Pokémon type colors — bg + text for badge rendering
 export const TYPE_COLORS: Record<string, { bg: string; text: string; hex: string }> = {

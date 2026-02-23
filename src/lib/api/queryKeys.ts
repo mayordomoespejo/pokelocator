@@ -16,11 +16,9 @@ export const pokemonKeys = {
   evolution: (chainId: number) => [...pokemonKeys.evolutions(), chainId] as const,
 
   allNames: () => [...pokemonKeys.all, "allNames"] as const,
-  search: (query: string) => [...pokemonKeys.all, "search", query] as const,
 } as const;
 
 export const typeKeys = {
   all: ["types"] as const,
   list: () => [...typeKeys.all, "list"] as const,
-  detail: (name: string) => [...typeKeys.all, name] as const,
 } as const;

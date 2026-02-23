@@ -13,13 +13,14 @@ import type {
   PaginationMeta,
 } from "@/types/models";
 import { apiFetch, buildUrl } from "./client";
-import { POKEMON_PAGE_SIZE } from "@/lib/constants";
+import { API_BATCH_CONCURRENCY, POKEMON_PAGE_SIZE } from "@/lib/constants";
 import {
   normalizePokemonToListItem,
   normalizePokemonToDetail,
   normalizeSpecies,
   normalizeEvolutionChain,
 } from "@/lib/utils/pokemon";
+import { mapSettledWithConcurrency } from "@/lib/utils/async";
 
 // ── Raw API fetches ───────────────────────────────────────────────────────────
 
@@ -69,14 +70,12 @@ export async function fetchPokemonListWithDetails(
 ): Promise<{ items: PokemonListItem[]; meta: PaginationMeta }> {
   const listPage = await fetchPokemonListPage(offset, limit);
 
-  // Batch-fetch all details in parallel — errors on individual pokemon are swallowed
-  const detailResults = await Promise.allSettled(
-    listPage.results.map((r) => apiFetch<APIPokemon>(r.url))
+  // Batch-fetch details with bounded concurrency.
+  const items = await mapSettledWithConcurrency(
+    listPage.results,
+    async (resource) => normalizePokemonToListItem(await apiFetch<APIPokemon>(resource.url)),
+    { concurrency: API_BATCH_CONCURRENCY }
   );
-
-  const items = detailResults
-    .filter((r): r is PromiseFulfilledResult<APIPokemon> => r.status === "fulfilled")
-    .map((r) => normalizePokemonToListItem(r.value));
 
   return {
     items,
@@ -97,13 +96,11 @@ export async function fetchPokemonByType(typeName: string): Promise<{ items: Pok
   // Limit to first 100 for performance — most types have 50–100 pokemon
   const toFetch = typeDetail.pokemon.slice(0, 100);
 
-  const detailResults = await Promise.allSettled(
-    toFetch.map((entry) => apiFetch<APIPokemon>(entry.pokemon.url))
+  const items = await mapSettledWithConcurrency(
+    toFetch,
+    async (entry) => normalizePokemonToListItem(await apiFetch<APIPokemon>(entry.pokemon.url)),
+    { concurrency: API_BATCH_CONCURRENCY }
   );
-
-  const items = detailResults
-    .filter((r): r is PromiseFulfilledResult<APIPokemon> => r.status === "fulfilled")
-    .map((r) => normalizePokemonToListItem(r.value));
 
   return { items };
 }

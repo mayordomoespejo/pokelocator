@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTheme } from "next-themes";
@@ -43,7 +44,14 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2" aria-label={t("homeLabel")}>
-          <img src="/pokemon-logo.svg" alt="Pokémon" className="h-7 w-auto" aria-hidden="true" />
+          <Image
+            src="/pokemon-logo.svg"
+            alt="Pokémon"
+            width={140}
+            height={28}
+            className="h-7 w-auto"
+            priority
+          />
         </Link>
 
         {/* Nav links */}
