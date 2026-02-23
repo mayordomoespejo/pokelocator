@@ -1,7 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// All app routes are under [locale]; e2e use English so test selectors (written in English) match the UI
-const E2E_BASE_URL = "http://localhost:3000/en";
+const E2E_BASE_URL = "http://localhost:3000";
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -12,6 +11,10 @@ export default defineConfig({
   reporter: "html",
   use: {
     baseURL: E2E_BASE_URL,
+    locale: "en-US",
+    extraHTTPHeaders: {
+      "Accept-Language": "en-US,en;q=0.9",
+    },
     trace: "on-first-retry",
   },
   projects: [
@@ -20,7 +23,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev",
-    url: E2E_BASE_URL,
+    url: `${E2E_BASE_URL}/en`,
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
   },
