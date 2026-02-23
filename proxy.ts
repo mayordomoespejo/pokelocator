@@ -42,7 +42,7 @@ function detectLocale(acceptLanguage: string | null): (typeof locales)[number] {
   return defaultLocale;
 }
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const localeInPath = getPathLocale(pathname);
 
