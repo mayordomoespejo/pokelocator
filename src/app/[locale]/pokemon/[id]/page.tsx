@@ -1,7 +1,8 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import { motion } from "framer-motion";
+import { capitalize } from "@/lib/utils/formatters";
 import { ChevronLeft, AlertCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -27,6 +28,13 @@ export default function PokemonDetailPage({ params }: DetailPageProps) {
   const { pokemon, isLoading, isError, error } = usePokemonDetail(isNaN(pokemonId) ? 0 : pokemonId);
   const { species, isLoading: speciesLoading } = usePokemonSpecies(pokemon?.id ?? 0);
   const { chain, isLoading: chainLoading } = useEvolutionChain(species?.evolutionChainId);
+
+  // Set document title when pokemon is loaded (for SEO and browser tab)
+  useEffect(() => {
+    if (pokemon) {
+      document.title = `${capitalize(pokemon.name)} | PokéLocator`;
+    }
+  }, [pokemon]);
 
   if (isLoading) {
     return <DetailSkeleton />;
