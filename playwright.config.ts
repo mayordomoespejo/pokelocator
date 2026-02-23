@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// All app routes are under [locale]; e2e use one locale so paths like /pokemon/25 resolve to /es/pokemon/25
+const E2E_BASE_URL = "http://localhost:3000/es";
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -7,7 +10,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: E2E_BASE_URL,
     trace: "on-first-retry",
   },
   projects: [
@@ -16,7 +19,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev",
-    url: "http://localhost:3000",
+    url: E2E_BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 60000,
   },

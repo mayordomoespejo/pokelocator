@@ -38,6 +38,7 @@ test.describe("Pokemon Detail Page", () => {
     await expect(backLink).toBeVisible();
     await backLink.click();
 
-    await expect(page).toHaveURL("/");
+    // Home is under locale (e.g. /es) when using baseURL with locale
+    await expect(page).toHaveURL(/\/(es|en)\/?$/);
   });
 });
