@@ -1,0 +1,94 @@
+{
+  "search": {
+    "placeholder": "Buscar Pokémon por nombre o número…",
+    "label": "Buscar Pokémon",
+    "clear": "Borrar búsqueda",
+    "comboboxLabel": "Seleccionar Pokémon para {label}"
+  },
+  "filter": {
+    "all": "Todos",
+    "label": "Filtrar por tipo",
+    "loading": "Cargando filtros de tipo"
+  },
+  "grid": {
+    "error": "Error al cargar Pokémon",
+    "errorMessage": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "empty": "No se encontraron Pokémon",
+    "emptyHint": "Intenta ajustar los filtros.",
+    "loadMore": "Cargar más",
+    "showing": "Mostrando {count} Pokémon",
+    "showingType": "Mostrando {count} Pokémon de tipo {type}"
+  },
+  "detail": {
+    "hero": {
+      "height": "ALTURA",
+      "weight": "PESO",
+      "baseXp": "EXP. BASE"
+    },
+    "stats": {
+      "title": "Estadísticas base",
+      "total": "Total",
+      "labels": {
+        "hp": "PS",
+        "attack": "Ataque",
+        "defense": "Defensa",
+        "special-attack": "At. Esp.",
+        "special-defense": "Def. Esp.",
+        "speed": "Velocidad"
+      }
+    },
+    "moves": {
+      "title": "Movimientos",
+      "empty": "No se encontraron movimientos para esta categoría.",
+      "methods": {
+        "levelUp": "Subida de nivel",
+        "machine": "MT/MO",
+        "tutor": "Tutor de movimientos",
+        "egg": "Movimiento huevo"
+      }
+    },
+    "evolution": {
+      "title": "Evolución",
+      "noEvolution": "No evoluciona",
+      "current": "actual"
+    }
+  },
+  "types": {
+    "normal": "Normal",
+    "fire": "Fuego",
+    "water": "Agua",
+    "electric": "Eléctrico",
+    "grass": "Planta",
+    "ice": "Hielo",
+    "fighting": "Lucha",
+    "poison": "Veneno",
+    "ground": "Tierra",
+    "flying": "Volador",
+    "psychic": "Psíquico",
+    "bug": "Bicho",
+    "rock": "Roca",
+    "ghost": "Fantasma",
+    "dragon": "Dragón",
+    "dark": "Siniestro",
+    "steel": "Acero",
+    "fairy": "Hada"
+  },
+  "compare": {
+    "stat": "Estadística",
+    "total": "Total",
+    "searchPlaceholder": "Buscar Pokémon…",
+    "remove": "Quitar {name} de la comparación",
+    "slotA": "Pokémon A",
+    "slotB": "Pokémon B",
+    "suggestions": "Sugerencias de Pokémon para {label}"
+  },
+  "favorites": {
+    "add": "Añadir {name} a favoritos",
+    "remove": "Quitar {name} de favoritos",
+    "saved": "Guardado",
+    "save": "Guardar"
+  },
+  "card": {
+    "viewDetails": "Ver detalles de {name}"
+  }
+}

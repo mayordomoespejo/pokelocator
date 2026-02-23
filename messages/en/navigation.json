@@ -1,0 +1,11 @@
+{
+  "pokedex": "Pokédex",
+  "favorites": "Favorites",
+  "compare": "Compare",
+  "switchToLight": "Switch to light mode",
+  "switchToDark": "Switch to dark mode",
+  "homeLabel": "PokéLocator home",
+  "favoritesCount": "{count} favorites",
+  "mainNav": "Main navigation",
+  "mobileNav": "Mobile navigation"
+}

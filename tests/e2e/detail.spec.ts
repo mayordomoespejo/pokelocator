@@ -1,0 +1,43 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("Pokemon Detail Page", () => {
+  test("navigates to Pikachu detail page", async ({ page }) => {
+    await page.goto("/pokemon/25");
+
+    // Title should include pikachu
+    await expect(page).toHaveTitle(/pikachu/i, { timeout: 10000 });
+  });
+
+  test("shows dex number and name", async ({ page }) => {
+    await page.goto("/pokemon/25");
+
+    await expect(page.getByText("#025")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("heading", { level: 1, name: /pikachu/i })).toBeVisible();
+  });
+
+  test("shows base stats section", async ({ page }) => {
+    await page.goto("/pokemon/25");
+
+    await expect(page.getByRole("region", { name: /base stats/i })).toBeVisible({
+      timeout: 10000,
+    });
+  });
+
+  test("evolution chain is visible", async ({ page }) => {
+    await page.goto("/pokemon/25");
+
+    const evolution = page.getByRole("region", { name: /evolution/i });
+    await expect(evolution).toBeVisible({ timeout: 15000 });
+  });
+
+  test("back link navigates to home", async ({ page }) => {
+    await page.goto("/pokemon/25");
+
+    await page.waitForLoadState("networkidle");
+    const backLink = page.getByRole("link", { name: /back to pokédex/i });
+    await expect(backLink).toBeVisible();
+    await backLink.click();
+
+    await expect(page).toHaveURL("/");
+  });
+});

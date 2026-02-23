@@ -1,0 +1,8 @@
+{
+  "generic": {
+    "title": "Algo salió mal",
+    "message": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "back": "Volver"
+  }
+}
