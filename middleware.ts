@@ -1,8 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { routing } from "./src/i18n/routing";
 
-const locales = routing.locales as readonly string[];
+// Configuración de i18n definida aquí para evitar importar next-intl en Edge Runtime.
+// En Edge (Vercel) no existe __dirname; next-intl/routing puede usarlo internamente.
+const locales = ["en", "es"] as const;
+const defaultLocale = "en";
 
 function getPathLocale(pathname: string): string | null {
   for (const locale of locales) {
@@ -13,9 +15,9 @@ function getPathLocale(pathname: string): string | null {
   return null;
 }
 
-function detectLocale(acceptLanguage: string | null): (typeof routing.locales)[number] {
+function detectLocale(acceptLanguage: string | null): (typeof locales)[number] {
   if (!acceptLanguage) {
-    return routing.defaultLocale;
+    return defaultLocale;
   }
 
   const weighted = acceptLanguage
@@ -37,7 +39,7 @@ function detectLocale(acceptLanguage: string | null): (typeof routing.locales)[n
     }
   }
 
-  return routing.defaultLocale;
+  return defaultLocale;
 }
 
 export default function middleware(request: NextRequest) {
