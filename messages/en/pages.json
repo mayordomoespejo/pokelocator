@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "PokéLocator",
+    "subtitle": "Explore all Pokémon — search by name, filter by type",
+    "searchSectionLabel": "Search",
+    "typeFilterSectionLabel": "Type filter"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "empty": "No favorites yet",
+    "emptyHint": "Tap the heart on any Pokémon to save it here.",
+    "browse": "Browse Pokédex"
+  },
+  "compare": {
+    "title": "Compare Pokémon",
+    "emptyHint": "Select two Pokémon to compare their stats side by side."
+  },
+  "detail": {
+    "back": "Back to Pokédex",
+    "notFound": "Pokémon not found",
+    "notFoundMessage": "No Pokémon found for \"{id}\"",
+    "about": "About",
+    "height": "Height",
+    "weight": "Weight",
+    "generation": "Generation",
+    "growthRate": "Growth Rate",
+    "captureRate": "Capture Rate",
+    "habitat": "Habitat",
+    "eggGroups": "Egg Groups",
+    "abilities": "Abilities",
+    "hidden": "Hidden",
+    "legendary": "✨ Legendary",
+    "mythical": "🌟 Mythical",
+    "baby": "🍼 Baby"
+  },
+  "notFound": {
+    "heading": "404",
+    "subheading": "Page not found",
+    "message": "This page fled into the tall grass. It might not exist.",
+    "button": "Go to Pokédex"
+  }
+}

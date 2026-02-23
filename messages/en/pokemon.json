@@ -1,0 +1,97 @@
+{
+  "search": {
+    "placeholder": "Search Pokémon by name or number…",
+    "label": "Search Pokémon",
+    "clear": "Clear search",
+    "comboboxLabel": "Select Pokémon for {label}",
+    "noResults": "No results found",
+    "noResultsHint": "Try another name or number."
+  },
+  "filter": {
+    "all": "All",
+    "label": "Filter by type",
+    "loading": "Loading type filters"
+  },
+  "grid": {
+    "error": "Failed to load Pokémon",
+    "errorMessage": "Something went wrong. Please try again.",
+    "retry": "Retry",
+    "empty": "No Pokémon found",
+    "emptyHint": "Try adjusting your filters.",
+    "loadMore": "Load more",
+    "showing": "Showing {count} Pokémon",
+    "showingType": "Showing {count} {type}-type Pokémon"
+  },
+  "detail": {
+    "hero": {
+      "height": "HEIGHT",
+      "weight": "WEIGHT",
+      "baseXp": "BASE XP"
+    },
+    "stats": {
+      "title": "Base Stats",
+      "total": "Total",
+      "labels": {
+        "hp": "HP",
+        "attack": "Attack",
+        "defense": "Defense",
+        "special-attack": "Sp. Atk",
+        "special-defense": "Sp. Def",
+        "speed": "Speed"
+      }
+    },
+    "moves": {
+      "title": "Moves",
+      "empty": "No moves found for this category.",
+      "methods": {
+        "levelUp": "Level Up",
+        "machine": "TM/HM",
+        "tutor": "Move Tutor",
+        "egg": "Egg Move"
+      }
+    },
+    "evolution": {
+      "title": "Evolution",
+      "noEvolution": "Does not evolve",
+      "current": "current"
+    }
+  },
+  "types": {
+    "normal": "Normal",
+    "fire": "Fire",
+    "water": "Water",
+    "electric": "Electric",
+    "grass": "Grass",
+    "ice": "Ice",
+    "fighting": "Fighting",
+    "poison": "Poison",
+    "ground": "Ground",
+    "flying": "Flying",
+    "psychic": "Psychic",
+    "bug": "Bug",
+    "rock": "Rock",
+    "ghost": "Ghost",
+    "dragon": "Dragon",
+    "dark": "Dark",
+    "steel": "Steel",
+    "fairy": "Fairy"
+  },
+  "compare": {
+    "stat": "Stat",
+    "total": "Total",
+    "searchPlaceholder": "Search Pokémon…",
+    "remove": "Remove {name} from comparison",
+    "slotA": "Pokémon A",
+    "slotB": "Pokémon B",
+    "suggestions": "Pokémon suggestions for {label}"
+  },
+  "favorites": {
+    "add": "Add {name} to favorites",
+    "remove": "Remove {name} from favorites",
+    "saved": "Saved",
+    "save": "Save"
+  },
+  "card": {
+    "viewDetails": "View {name} details"
+  }
+}

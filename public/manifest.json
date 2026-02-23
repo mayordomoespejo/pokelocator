@@ -1,0 +1,19 @@
+{
+  "name": "PokéLocator",
+  "short_name": "PokéLocator",
+  "description": "Search, explore, and discover Pokémon. View stats, moves, evolutions, and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ef4444",
+  "orientation": "portrait",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

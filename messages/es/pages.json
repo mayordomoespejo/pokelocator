@@ -1,0 +1,42 @@
+{
+  "home": {
+    "title": "PokéLocator",
+    "subtitle": "Explora todos los Pokémon — busca por nombre o filtra por tipo",
+    "searchSectionLabel": "Búsqueda",
+    "typeFilterSectionLabel": "Filtro por tipo"
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "empty": "Aún no tienes favoritos",
+    "emptyHint": "Pulsa el corazón en cualquier Pokémon para guardarlo aquí.",
+    "browse": "Ver Pokédex"
+  },
+  "compare": {
+    "title": "Comparar Pokémon",
+    "emptyHint": "Selecciona dos Pokémon para comparar sus estadísticas."
+  },
+  "detail": {
+    "back": "Volver al Pokédex",
+    "notFound": "Pokémon no encontrado",
+    "notFoundMessage": "No se encontró ningún Pokémon para \"{id}\"",
+    "about": "Acerca de",
+    "height": "Altura",
+    "weight": "Peso",
+    "generation": "Generación",
+    "growthRate": "Crecimiento",
+    "captureRate": "Tasa de captura",
+    "habitat": "Hábitat",
+    "eggGroups": "Grupos huevo",
+    "abilities": "Habilidades",
+    "hidden": "Oculta",
+    "legendary": "✨ Legendario",
+    "mythical": "🌟 Mítico",
+    "baby": "🍼 Bebé"
+  },
+  "notFound": {
+    "heading": "404",
+    "subheading": "Página no encontrada",
+    "message": "Esta página se escapó a los matorrales. Puede que no exista.",
+    "button": "Ir al Pokédex"
+  }
+}

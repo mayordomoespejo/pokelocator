@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+/* ── Design tokens ────────────────────────────────────────────────────────── */
+
+:root {
+  --bg-primary: 255 255 255;
+  --bg-secondary: 248 250 252;
+  --bg-card: 255 255 255;
+  --bg-muted: 241 245 249;
+
+  --text-primary: 15 23 42;
+  --text-secondary: 71 85 105;
+  --text-muted: 148 163 184;
+
+  --brand: 42 117 187;
+  --brand-dark: 29 79 145;
+  --brand-light: 223 237 255;
+
+  --border: 226 232 240;
+  --border-strong: 203 213 225;
+}
+
+.dark {
+  --bg-primary: 9 9 11;
+  --bg-secondary: 17 17 21;
+  --bg-card: 24 24 30;
+  --bg-muted: 39 39 45;
+
+  --text-primary: 248 250 252;
+  --text-secondary: 148 163 184;
+  --text-muted: 71 85 105;
+
+  --brand: 90 153 224;
+  --brand-dark: 126 179 238;
+  --brand-light: 20 41 70;
+
+  --border: 39 39 42;
+  --border-strong: 63 63 70;
+}
+
+/* ── Tailwind v4 theme mapping ────────────────────────────────────────────── */
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Courier New", monospace;
+
+  --color-bg-primary: rgb(var(--bg-primary));
+  --color-bg-secondary: rgb(var(--bg-secondary));
+  --color-bg-card: rgb(var(--bg-card));
+  --color-bg-muted: rgb(var(--bg-muted));
+
+  --color-text-primary: rgb(var(--text-primary));
+  --color-text-secondary: rgb(var(--text-secondary));
+  --color-text-muted: rgb(var(--text-muted));
+
+  --color-brand: rgb(var(--brand));
+  --color-brand-dark: rgb(var(--brand-dark));
+  --color-brand-light: rgb(var(--brand-light));
+
+  --color-border: rgb(var(--border));
+  --color-border-strong: rgb(var(--border-strong));
+}
+
+/* ── Base styles ──────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--bg-primary));
+  color: rgb(var(--text-primary));
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+}
+
+:where(a, button, [role="button"]):focus-visible {
+  outline: 2px solid rgb(var(--brand));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hide native clear button on search inputs (we render a custom one) */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+input[type="search"]::-ms-clear,
+input[type="search"]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--bg-muted)) 25%,
+    rgb(var(--bg-secondary)) 50%,
+    rgb(var(--bg-muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Horizontal scrollbar used by type chips: subtle on mobile, clearer on hover */
+.type-filter-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--border-strong) / 0.3) transparent;
+}
+
+.type-filter-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.type-filter-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.type-filter-scroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: rgb(var(--border-strong) / 0.3);
+}
+
+/* Filter chips: prevent browser default flash outline on click/tap */
+.type-filter-chip {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.type-filter-chip:focus,
+.type-filter-chip:focus-visible,
+.type-filter-chip:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Vertical scrollbar for dropdown listboxes (search/select suggestions) */
+.listbox-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--border-strong) / 0.45) transparent;
+}
+
+.listbox-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.listbox-scroll::-webkit-scrollbar-track {
+  margin-block: 6px;
+  background: transparent;
+}
+
+.listbox-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background: rgb(var(--border-strong) / 0.5);
+  background-clip: padding-box;
+}
+
+.listbox-scroll:hover::-webkit-scrollbar-thumb {
+  background: rgb(var(--border-strong) / 0.65);
+}
+
+@media (max-width: 640px) {
+  .type-filter-scroll::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .type-filter-scroll::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong) / 0.22);
+  }
+}
+
+@media (hover: hover) {
+  .type-filter-scroll::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong) / 0.2);
+  }
+
+  .type-filter-scroll:hover::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong) / 0.4);
+  }
+}

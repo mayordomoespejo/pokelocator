@@ -1,0 +1,10 @@
+{
+  "appName": "PokéLocator",
+  "scrollTop": {
+    "label": "Back to top"
+  },
+  "footer": {
+    "built": "Built with ❤️ using Next.js & PokéAPI",
+    "data": "Data from PokéAPI · Pokémon © Nintendo / Game Freak"
+  }
+}
