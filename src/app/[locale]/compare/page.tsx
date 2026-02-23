@@ -99,13 +99,13 @@ export default function ComparePage() {
       )}
 
       {/* Comparison table */}
-      {canCompare && (
+      {canCompare && pokemonA && pokemonB && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <CompareTable pokemonA={pokemonA!} pokemonB={pokemonB!} />
+          <CompareTable pokemonA={pokemonA} pokemonB={pokemonB} />
         </motion.div>
       )}
 

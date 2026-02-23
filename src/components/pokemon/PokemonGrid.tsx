@@ -79,7 +79,7 @@ export function PokemonGrid({
         {onRetry && (
           <Button variant="primary" onClick={onRetry}>
             <RefreshCw size={16} aria-hidden="true" />
-            {t("errorMessage")}
+            {t("retry")}
           </Button>
         )}
       </div>

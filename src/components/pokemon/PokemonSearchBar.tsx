@@ -6,6 +6,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Search, X } from "lucide-react";
 import { SearchSuggestions } from "@/features/search/SearchSuggestions";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSearchCombobox, useComboboxScrollIntoView } from "@/hooks/useSearchCombobox";
 import { usePokemonSearch } from "@/hooks/usePokemonSearch";
 import { cn } from "@/lib/utils/cn";
 import { SEARCH_DEBOUNCE_MS } from "@/lib/constants";
@@ -18,89 +19,71 @@ export function PokemonSearchBar({ className }: PokemonSearchBarProps) {
   const t = useTranslations("pokemon.search");
   const router = useRouter();
   const inputId = useId();
-  const [query, setQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const listboxRef = useRef<HTMLUListElement>(null);
 
+  const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, SEARCH_DEBOUNCE_MS);
   const { suggestions, isLoading } = usePokemonSearch(debouncedQuery);
 
-  const showSuggestions = isOpen && suggestions.length > 0;
+  const combobox = useSearchCombobox(suggestions, {
+    minQueryLength: 2,
+    query,
+    setQuery,
+  });
+  useComboboxScrollIntoView(listboxRef, combobox.activeIndex, combobox.showSuggestions);
+
   const showNoResults =
-    isOpen && debouncedQuery.trim().length >= 2 && !isLoading && suggestions.length === 0;
+    combobox.isOpen && debouncedQuery.trim().length >= 2 && !isLoading && suggestions.length === 0;
 
   const handleSelect = useCallback(
     (suggestion: { id: number; name: string }) => {
       setQuery("");
-      setIsOpen(false);
-      setActiveIndex(-1);
+      combobox.close();
       router.push(`/pokemon/${suggestion.id}`);
     },
-    [router]
+    [router, combobox]
   );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!showSuggestions && e.key !== "Enter") return;
-
-      switch (e.key) {
-        case "ArrowDown":
+      combobox.handleKeyDown(e);
+      if (e.key === "Enter") {
+        if (combobox.activeIndex >= 0 && suggestions[combobox.activeIndex]) {
           e.preventDefault();
-          setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
-          break;
-        case "ArrowUp":
+          handleSelect(suggestions[combobox.activeIndex]);
+        } else if (query.trim()) {
           e.preventDefault();
-          setActiveIndex((i) => Math.max(i - 1, 0));
-          break;
-        case "Enter":
-          e.preventDefault();
-          if (activeIndex >= 0 && suggestions[activeIndex]) {
-            handleSelect(suggestions[activeIndex]);
-          } else if (query.trim()) {
-            router.push(`/pokemon/${query.toLowerCase().trim()}`);
-            setQuery("");
-            setIsOpen(false);
-          }
-          break;
-        case "Escape":
-          setIsOpen(false);
-          setActiveIndex(-1);
-          inputRef.current?.blur();
-          break;
+          router.push(`/pokemon/${query.toLowerCase().trim()}`);
+          setQuery("");
+          combobox.close();
+        }
       }
     },
-    [showSuggestions, activeIndex, suggestions, handleSelect, query, router]
+    [combobox, suggestions, query, handleSelect, router]
   );
 
-  const activeDescendant = activeIndex >= 0 ? `${inputId}-option-${activeIndex}` : undefined;
+  const activeDescendant = combobox.getActiveDescendantId(inputId);
 
   return (
     <div className={cn("relative", className)}>
-      {/* Input — role="combobox" must be directly on the input element */}
       <div className="relative flex items-center">
         <div className="text-text-secondary pointer-events-none absolute left-3">
           <Search size={16} aria-hidden="true" />
         </div>
         <input
-          ref={inputRef}
           id={inputId}
           type="search"
           role="combobox"
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setIsOpen(true);
-            setActiveIndex(-1);
-          }}
-          onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+          onChange={combobox.inputHandlers.onChange}
+          onFocus={combobox.inputHandlers.onFocus}
+          onBlur={combobox.inputHandlers.onBlur}
           onKeyDown={handleKeyDown}
           placeholder={t("placeholder")}
           autoComplete="off"
           aria-label={t("label")}
           aria-autocomplete="list"
-          aria-expanded={showSuggestions}
+          aria-expanded={combobox.showSuggestions}
           aria-haspopup="listbox"
           aria-controls={`${inputId}-listbox`}
           aria-activedescendant={activeDescendant}
@@ -116,8 +99,7 @@ export function PokemonSearchBar({ className }: PokemonSearchBarProps) {
           <button
             onClick={() => {
               setQuery("");
-              setIsOpen(false);
-              inputRef.current?.focus();
+              combobox.close();
             }}
             aria-label={t("clear")}
             className="text-text-secondary hover:bg-brand-light/45 hover:text-brand absolute right-3 cursor-pointer rounded-full p-0.5 transition-colors"
@@ -128,12 +110,14 @@ export function PokemonSearchBar({ className }: PokemonSearchBarProps) {
         )}
       </div>
 
-      {showSuggestions && (
+      {combobox.showSuggestions && (
         <SearchSuggestions
+          ref={listboxRef}
           suggestions={suggestions}
-          activeIndex={activeIndex}
+          activeIndex={combobox.activeIndex}
           onSelect={handleSelect}
           inputId={inputId}
+          listboxAriaLabel={t("label")}
         />
       )}
 

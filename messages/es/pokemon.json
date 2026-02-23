@@ -15,6 +15,7 @@
   "grid": {
     "error": "Error al cargar Pokémon",
     "errorMessage": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "retry": "Reintentar",
     "empty": "No se encontraron Pokémon",
     "emptyHint": "Intenta ajustar los filtros.",
     "loadMore": "Cargar más",

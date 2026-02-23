@@ -13,8 +13,16 @@ export default function HomePage() {
   const tPokemon = useTranslations("pokemon.grid");
   const [typeFilter, setTypeFilter] = useState<string | undefined>(undefined);
 
-  const { pokemon, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError, error } =
-    usePokemonList({ typeFilter });
+  const {
+    pokemon,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = usePokemonList({ typeFilter });
 
   return (
     <motion.div
@@ -53,6 +61,7 @@ export default function HomePage() {
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
         fetchNextPage={fetchNextPage}
+        onRetry={refetch}
       />
     </motion.div>
   );

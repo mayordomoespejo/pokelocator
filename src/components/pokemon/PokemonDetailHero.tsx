@@ -7,8 +7,7 @@ import { TypeBadge } from "@/components/ui/Badge";
 import { FavoritesButton } from "@/features/favorites/FavoritesButton";
 import { formatDexNumber, capitalize, formatHeight, formatWeight } from "@/lib/utils/formatters";
 import { pokemonToFavoriteItem } from "@/lib/utils/mappers";
-import type { PokemonDetail } from "@/types/models";
-import type { PokemonSpecies } from "@/types/models";
+import type { PokemonDetail, PokemonSpecies } from "@/types/models";
 
 interface PokemonDetailHeroProps {
   pokemon: PokemonDetail;

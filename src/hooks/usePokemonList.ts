@@ -17,6 +17,7 @@ interface UsePokemonListResult {
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
+  refetch: () => void | Promise<unknown>;
 }
 
 /**
@@ -52,6 +53,7 @@ export function usePokemonList(options: UsePokemonListOptions = {}): UsePokemonL
       isLoading: typeQuery.isLoading,
       isError: typeQuery.isError,
       error: typeQuery.error,
+      refetch: () => typeQuery.refetch(),
     };
   }
 
@@ -63,5 +65,6 @@ export function usePokemonList(options: UsePokemonListOptions = {}): UsePokemonL
     isLoading: infiniteQuery.isLoading,
     isError: infiniteQuery.isError,
     error: infiniteQuery.error,
+    refetch: () => infiniteQuery.refetch(),
   };
 }

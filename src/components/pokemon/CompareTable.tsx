@@ -9,13 +9,37 @@ interface CompareTableProps {
   pokemonB: PokemonDetail;
 }
 
+/** Build a map of stat name -> baseStat for O(1) lookup. */
+function statsByName(pokemon: PokemonDetail): Map<string, number> {
+  const map = new Map<string, number>();
+  for (const s of pokemon.stats) {
+    map.set(s.name, s.baseStat);
+  }
+  return map;
+}
+
 export function CompareTable({ pokemonA, pokemonB }: CompareTableProps) {
   const t = useTranslations("pokemon.compare");
   const tStats = useTranslations("pokemon.detail.stats");
-  const statRows = pokemonA.stats.map((stat) => ({
-    key: stat.name,
-    label: tStats.has(`labels.${stat.name}`) ? tStats(`labels.${stat.name}`) : stat.displayName,
-  }));
+
+  const statsA = statsByName(pokemonA);
+  const statsB = statsByName(pokemonB);
+  const namesA = new Set(pokemonA.stats.map((s) => s.name));
+  const statNames = [
+    ...pokemonA.stats.map((s) => s.name),
+    ...pokemonB.stats.map((s) => s.name).filter((name) => !namesA.has(name)),
+  ];
+
+  const statRows = statNames.map((name) => {
+    const displayName =
+      pokemonA.stats.find((s) => s.name === name)?.displayName ??
+      pokemonB.stats.find((s) => s.name === name)?.displayName ??
+      name;
+    return {
+      key: name,
+      label: tStats.has(`labels.${name}`) ? tStats(`labels.${name}`) : displayName,
+    };
+  });
 
   return (
     <div className="border-border bg-bg-card overflow-x-auto rounded-2xl border">
@@ -34,9 +58,9 @@ export function CompareTable({ pokemonA, pokemonB }: CompareTableProps) {
           </tr>
         </thead>
         <tbody>
-          {statRows.map((stat, i) => {
-            const statA = pokemonA.stats[i]?.baseStat ?? 0;
-            const statB = pokemonB.stats[i]?.baseStat ?? 0;
+          {statRows.map((stat) => {
+            const statA = statsA.get(stat.key) ?? 0;
+            const statB = statsB.get(stat.key) ?? 0;
             const aWins = statA > statB;
             const bWins = statB > statA;
             return (
