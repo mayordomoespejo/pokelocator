@@ -1,9 +1,17 @@
-import createMiddleware from "next-intl/middleware";
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { routing } from "./src/i18n/routing";
 
-const intlMiddleware = createMiddleware(routing);
+const locales = routing.locales as readonly string[];
+
+function getPathLocale(pathname: string): string | null {
+  for (const locale of locales) {
+    if (pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)) {
+      return locale;
+    }
+  }
+  return null;
+}
 
 function detectLocale(acceptLanguage: string | null): (typeof routing.locales)[number] {
   if (!acceptLanguage) {
@@ -33,16 +41,25 @@ function detectLocale(acceptLanguage: string | null): (typeof routing.locales)[n
 }
 
 export default function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === "/") {
+  const { pathname } = request.nextUrl;
+  const localeInPath = getPathLocale(pathname);
+
+  if (!localeInPath) {
     const locale = detectLocale(request.headers.get("accept-language"));
-    const url = request.nextUrl.clone();
-    url.pathname = `/${locale}`;
-    return NextResponse.redirect(url);
+    const destination = pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
+    return NextResponse.redirect(new URL(destination, request.url));
   }
 
-  return intlMiddleware(request);
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-next-intl-locale", localeInPath);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|_vercel|.*\\..*).*)"],
 };
