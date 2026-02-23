@@ -26,6 +26,7 @@
 
 # generated / local tooling
 playwright-report/
+test-results/
 .claude/
 
 # debug
