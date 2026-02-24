@@ -1,8 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-// Configuración de i18n definida aquí para evitar importar next-intl en Edge Runtime.
-// En Edge (Vercel) no existe __dirname; next-intl/routing puede usarlo internamente.
 const locales = ["en", "es"] as const;
 const defaultLocale = "en";
 
@@ -42,7 +40,7 @@ function detectLocale(acceptLanguage: string | null): (typeof locales)[number] {
   return defaultLocale;
 }
 
-export default function proxy(request: NextRequest) {
+export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const localeInPath = getPathLocale(pathname);
 
