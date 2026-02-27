@@ -17,10 +17,6 @@ export const metadata: Metadata = {
     "Search, explore, and discover Pokémon. View stats, moves, evolution chains, and more.",
   keywords: ["pokemon", "pokedex", "pokémon", "stats", "moves", "evolution"],
   authors: [{ name: "PokéLocator" }],
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-  },
   openGraph: {
     type: "website",
     siteName: "PokéLocator",

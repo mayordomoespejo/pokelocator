@@ -11,6 +11,9 @@
       "Bash(node -e:*)",
       "Bash(python3:*)",
       "Bash(npm i:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/Miguel/Documents/developer/pokelocator/src/app"
     ]
   }
 }
