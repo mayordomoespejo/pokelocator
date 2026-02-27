@@ -61,5 +61,8 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|_vercel|.*\\..*).*)"],
+  // Do not run locale redirect for static assets or favicon (like dealwing/cinescope)
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon\\.ico|favicon\\.svg|icon\\.svg|icon\\.png|apple-icon\\.png|_vercel|.*\\..*).*)",
+  ],
 };
