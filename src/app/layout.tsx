@@ -29,12 +29,8 @@ export const metadata: Metadata = {
     description: "Search, explore, and discover Pokémon.",
   },
   icons: {
-    icon: [
-      { url: "/icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    shortcut: [{ url: "/icon.png", sizes: "180x180", type: "image/png" }],
-    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
   },
   manifest: "/manifest.json",
 };
