@@ -10,7 +10,10 @@
       "Bash(npm run lint:*)",
       "Bash(node -e:*)",
       "Bash(python3:*)",
-      "Bash(npm i:*)"
+      "Bash(npm i:*)",
+      "Bash(convert --version)",
+      "Bash(curl -s https://pokelocator.vercel.app)",
+      "Bash(curl -sI https://pokelocator.vercel.app/icon.png)"
     ],
     "additionalDirectories": [
       "/Users/Miguel/Documents/developer/pokelocator/src/app"
